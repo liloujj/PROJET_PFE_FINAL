@@ -9,7 +9,7 @@ import patientRoutes from "./routes/PatientRouter.js";
 import adminRoutes from "./routes/AdminRouter.js";
 import paymentRoutes from "./routes/PaymentRouter.js";
 import dotenv from "dotenv";
-import { handleWebhook } from "./controllers/paymentController.js";
+import { handleWebhook } from "./controllers/PaymentController.js";
 import userRoutes from "./routes/UserRouter.js";
 import path from "path";
 import { fileURLToPath } from "url";

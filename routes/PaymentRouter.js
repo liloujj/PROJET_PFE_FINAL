@@ -3,7 +3,7 @@ import {
   createSubscription,
   cancelSubscription,
   getSubscription,
-} from "../controllers/paymentController.js";
+} from "../controllers/PaymentController.js";
 
 const paymentRoutes = Router();
 

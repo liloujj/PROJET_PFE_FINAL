@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 
 const connectDB = async () => {
-  const mongoURI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/deepvisionlab';
+  const mongoURI = process.env.DATABASE_URL || 'mongodb://127.0.0.1:27017/deepvisionlab';
+  console.log(`Uril :${mongoURI}`)
   try {
     await mongoose.connect(mongoURI, {
       serverSelectionTimeoutMS: 5000 ,

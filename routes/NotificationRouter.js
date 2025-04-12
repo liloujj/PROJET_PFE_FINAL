@@ -1,12 +1,12 @@
-import express from "express";
+import {Router} from "express";
+import { authenticateToken } from "../middlewares/auth.js";
 import {
   getNotifications,
   markAsRead,
   markAllAsRead,
-} from "../controllers/notificationController.js";
-import { authenticateToken } from "../middlewares/auth.js";
+} from "../controllers/NotificationController.js";
 
-const router = express.Router();
+const router = Router();
 
 router.get("/", authenticateToken, getNotifications);
 router.put("/read/:notificationId", markAsRead);

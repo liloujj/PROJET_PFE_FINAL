@@ -48,6 +48,9 @@ export const signUp = async (req, res) => {
       username: email,
       activationCode: activation,
     });
+    
+    console.log(`activition code : ${activation}`);
+    console.log(`token           : ${token}`);
 
     await transporter.sendMail({
       from: `DEEPVISION LAB <${process.env.SMTP_MAIL}>`,
@@ -176,7 +179,7 @@ export const logIn = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Login successful", user: userWithoutPassword });
+      .json({ message: "Login successful", user: userWithoutPassword ,token:jwtToken});
   } catch (error) {
     res.status(error.status || 500).json({ err: error.message });
   }
