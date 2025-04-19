@@ -1,13 +1,18 @@
 import Notification from "../models/Notification.js";
 import mongoose from "mongoose";
+import User from "../models/User.js"; // Assure-toi que ce chemin est correct
 
+// Récupérer les notifications selon le rôle
 export const getNotifications = async (req, res) => {
   try {
     const userId = req.user.id;
     const user = await User.findById(userId);
-    let query = {
+
+    // Construire la requête selon le rôle
+    const query = {
       to: user.role === "Admin" ? "admin" : new mongoose.Types.ObjectId(userId),
     };
+
     const { read } = req.query;
     if (read !== undefined) {
       query.read = read === "true";
@@ -24,10 +29,11 @@ export const getNotifications = async (req, res) => {
   }
 };
 
+// Marquer une notification comme lue
 export const markAsRead = async (req, res) => {
   try {
     const { notificationId } = req.params;
-    const { userId } = req.body; // Require userId in request body
+    const { userId } = req.body;
 
     const notification = await Notification.findByIdAndUpdate(
       notificationId,
@@ -50,14 +56,20 @@ export const markAsRead = async (req, res) => {
   }
 };
 
+// Marquer toutes les notifications comme lues
 export const markAllAsRead = async (req, res) => {
   try {
     const userId = req.user.id;
+    const user = await User.findById(userId);
 
-    const result = await Notification.updateMany(
-      { to: userId, read: false },
-      { $set: { read: true } }
-    );
+    const query = {
+      to: user.role === "Admin" ? "admin" : new mongoose.Types.ObjectId(userId),
+      read: false,
+    };
+
+    const result = await Notification.updateMany(query, {
+      $set: { read: true },
+    });
 
     req.app.get("io").to(`user-${userId}`).emit("all-notifications-read");
 
@@ -69,3 +81,4 @@ export const markAllAsRead = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
