@@ -4,11 +4,11 @@ import mongoose from "mongoose";
 export const getNotifications = async (req, res) => {
   try {
     const userId = req.user.id;
+    const user = await User.findById(userId);
     let query = {
-      to: new mongoose.Types.ObjectId(userId), // Convert string to ObjectId
+      to: user.role === "Admin" ? "admin" : new mongoose.Types.ObjectId(userId),
     };
     const { read } = req.query;
-
     if (read !== undefined) {
       query.read = read === "true";
     }
